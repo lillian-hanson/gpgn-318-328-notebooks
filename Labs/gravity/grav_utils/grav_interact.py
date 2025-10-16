@@ -46,7 +46,7 @@ class GravInteract(widgets.VBox):
             )
             self.tie_position.observe(self._update_fig)
             self.data = np.asarray(self.data)[arg_sort]
-            scatter_args = dict(x=x, y=data, mode="markers")
+            scatter_args = dict(x=x, y=self.data, mode="markers")
             if self.std is not None:
                 self.std = np.asarray(self.std)[arg_sort]
                 scatter_args["error_y"] = dict(type="data", array=std, visible=True)
@@ -102,6 +102,12 @@ class GravInteract(widgets.VBox):
         d_diff -= d_diff[tie_ind]
         d_diff /= self.std
         return np.dot(d_diff, d_diff) / self.n_data
+
+    def set_density(self, value):
+        self.density.value = value
+
+    def get_density(self):
+        return self.density.value
     
     def _calc_grav_data(self, polygons):
         self.gz = np.zeros(len(self.locations))
