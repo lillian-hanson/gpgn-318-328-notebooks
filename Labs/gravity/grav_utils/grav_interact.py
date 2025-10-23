@@ -7,7 +7,6 @@ from gpgn_utilities.poly_interact import PolygonEditor
 import plotly.graph_objects as go
 import numpy as np
 import ipywidgets as widgets
-from ipyevents import Event
 
 from Labs.gravity.grav_utils.gpoly import gpoly
 
@@ -46,7 +45,7 @@ class GravInteract(widgets.VBox):
             )
             self.tie_position.observe(self._update_fig)
             self.data = np.asarray(self.data)[arg_sort]
-            scatter_args = dict(x=x, y=data, mode="markers")
+            scatter_args = dict(x=x, y=self.data, mode="markers")
             if self.std is not None:
                 self.std = np.asarray(self.std)[arg_sort]
                 scatter_args["error_y"] = dict(type="data", array=std, visible=True)
@@ -90,7 +89,6 @@ class GravInteract(widgets.VBox):
 
         super().__init__(pieces, layout=widgets.Layout(justify_content="center", max_width="70%"))
 
-
     @property
     def n_data(self):
         return len(self.locations)
@@ -102,6 +100,12 @@ class GravInteract(widgets.VBox):
         d_diff -= d_diff[tie_ind]
         d_diff /= self.std
         return np.dot(d_diff, d_diff) / self.n_data
+
+    def set_density(self, value):
+        self.density.value = value
+
+    def get_density(self):
+        return self.density.value
     
     def _calc_grav_data(self, polygons):
         self.gz = np.zeros(len(self.locations))
