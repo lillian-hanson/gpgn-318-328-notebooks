@@ -1,6 +1,6 @@
 import sys, pathlib
 current_file_path = pathlib.Path(__file__).parent.parent
-sys.path.append(str(current_file_path.parent.parent.parent))
+sys.path.append(str(current_file_path.parent.parent))
 
 from gpgn_utilities.poly_interact import PolygonEditor
 
